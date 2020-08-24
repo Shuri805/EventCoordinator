@@ -1,16 +1,17 @@
+/* eslint-disable comma-dangle */
 const { client } = require('./client');
-// const users = require('./users');
+const users = require('./users');
 
 const createGroup = async ({ ownerId, groupName, description }) => {
   const {
-    rows: [group],
+    rows: [group]
   } = await client.query(
     `
-    INSERT INTO groups(ownerId, groupName, description)
+    INSERT INTO groups("ownerId", "groupName", description)
     VALUES ($1, $2, $3)
     RETURNING *;
     `,
-    [ownerId, groupName, description],
+    [ownerId, groupName, description]
   );
 
   return group;
@@ -18,34 +19,33 @@ const createGroup = async ({ ownerId, groupName, description }) => {
 
 const getAllGroups = async () => {
   const { rows } = await client.query(
-    `SELECT id, ownerId, groupName, description
+    `SELECT id, "ownerId", "groupName", description
       FROM groups;
-    `,
+    `
   );
   return rows;
 };
 
 const getGroupById = async (groupId) => {
   const {
-    rows: [group],
+    rows: [group]
   } = await client.query(
     `
-      SELECT id, ownerId, groupName, description
+      SELECT id, "ownerId", "groupName", description
       FROM groups
       WHERE id=$1;
       `,
-    [groupId],
+    [groupId]
   );
 
   if (!group) {
     return null;
   }
-  // IS THIS IS MISSING SOMETHING expect groupid to come in as parameter to function
   return group;
 };
 
 module.exports = {
   createGroup,
   getAllGroups,
-  getGroupById,
+  getGroupById
 };

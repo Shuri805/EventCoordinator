@@ -13,13 +13,13 @@ apiRouter.get('/', async (req, res, next) => {
   next();
 });
 
-// const groupRouter = require('./group');
+const groupsRouter = require('./groups');
 
-// router.use('/group', groupRouter);
+apiRouter.use('/groups', groupsRouter);
 
-// const eventRouter = require('./events');
+const eventsRouter = require('./events');
 
-// router.use('/event', eventRouter);
+apiRouter.use('/events', eventsRouter);
 
 // const groupEventsRouter = require('./groupEvents');
 
