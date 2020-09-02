@@ -1,6 +1,5 @@
 /* eslint-disable comma-dangle */
 const { client } = require('./client');
-const users = require('./users');
 
 const createGroup = async ({ ownerId, groupName, description }) => {
   const {

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 // eslint-disable-next-line no-unused-vars
-const { client, getAllUsers } = require('./index');
+const { client, getAllUsers, createUser } = require('./index');
 
 async function dropTables() {
   try {
@@ -108,12 +108,36 @@ async function createTables() {
     throw error;
   }
 }
+async function createInitialUsers() {
+  try {
+    console.log("Starting to create users...");
+
+    await createUser({
+      username: 'albert',
+      password: 'bertie99'
+    });
+    await createUser({
+      username: 'sandra',
+      password: '2sandy4me'
+    });
+    await createUser({
+      username: 'glamgal',
+      password: 'soglam'
+    });
+
+    console.log("Finished creating users!");
+  } catch (error) {
+    console.error("Error creating users!");
+    throw error;
+  }
+}
 
 async function rebuildDB() {
   client.connect();
 
   await dropTables();
   await createTables();
+  await createInitialUsers();
 }
 
 async function testDB() {

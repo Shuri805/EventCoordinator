@@ -4,12 +4,15 @@ const express = require('express');
 
 const usersRouter = express.Router();
 
+const jwt = require('jsonwebtoken');
+
 const {
   createUser,
   getAllUsers,
+  getUserByUsername,
   doesUserExist,
   login,
-  loginWithToken,
+  loginWithToken
 } = require('../db/index');
 
 usersRouter.use((req, res, next) => {
@@ -22,7 +25,7 @@ usersRouter.get('/', async (req, res) => {
   const users = await getAllUsers();
 
   res.send({
-    users,
+    users
   });
 });
 
@@ -164,5 +167,34 @@ usersRouter.get('/', async (req, res) => {
 //     next({ error });
 //   }
 // });
+
+usersRouter.post('/login', async (req, res, next) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    next({
+      name: 'MissingCredentialsError',
+      message: 'Please supply both a username and password'
+    });
+  }
+
+  try {
+    const user = await getUserByUsername(username);
+
+    if (user && user.password === password) {
+      res.send({
+        message: "you're logged in",
+      });
+    } else {
+      next({
+        name: 'IncorectCredentialsError',
+        message: 'Username or password is incorrect'
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
 
 module.exports = usersRouter;
