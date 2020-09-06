@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const { promisifiedVerify } = require('../db/users');
 
 // eslint-disable-next-line max-len
@@ -20,6 +21,16 @@ async function verifyToken(req, res, next) {
   }
 }
 
+function requireUser(req, res, next) {
+  if (!req.user) {
+    next({
+      name: 'MissingUserError',
+      message: 'You must be logged in to perform this action'
+    });
+  }
+}
+
 module.exports = {
   verifyToken,
+  requireUser
 };

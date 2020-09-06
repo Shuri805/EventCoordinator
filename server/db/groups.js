@@ -1,7 +1,12 @@
 /* eslint-disable comma-dangle */
 const { client } = require('./client');
 
-const createGroup = async ({ ownerId, groupName, description }) => {
+const createGroup = async ({
+  ownerId,
+  groupName,
+  description,
+  events = []
+}) => {
   const {
     rows: [group]
   } = await client.query(
@@ -12,6 +17,10 @@ const createGroup = async ({ ownerId, groupName, description }) => {
     `,
     [ownerId, groupName, description]
   );
+
+  // const eventList = await createEvents(events);
+
+  // return await addEventToGroup(group.id, eventList);
 
   return group;
 };
